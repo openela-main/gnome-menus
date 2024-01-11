@@ -3,7 +3,7 @@
 Summary:  A menu system for the GNOME project
 Name: gnome-menus
 Version: 3.13.3
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 URL: http://www.gnome.org/
@@ -60,6 +60,7 @@ make %{?_smp_mflags}
 make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 cp $RPM_BUILD_ROOT%{_sysconfdir}/xdg/menus/{gnome-,}applications.menu
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/xdg/menus/{gnome-,}applications-merged
 
 %find_lang gnome-menus-3.0
 
@@ -70,7 +71,9 @@ cp $RPM_BUILD_ROOT%{_sysconfdir}/xdg/menus/{gnome-,}applications.menu
 %files -f gnome-menus-3.0.lang
 %doc AUTHORS NEWS COPYING.LIB
 %{_sysconfdir}/xdg/menus/gnome-applications.menu
+%dir %{_sysconfdir}/xdg/menus/gnome-applications-merged
 %{_sysconfdir}/xdg/menus/applications.menu
+%dir %{_sysconfdir}/xdg/menus/applications-merged
 %{_libdir}/lib*.so.*
 %{_datadir}/desktop-directories/*
 %{_libdir}/girepository-1.0/GMenu-3.0.typelib
@@ -82,6 +85,10 @@ cp $RPM_BUILD_ROOT%{_sysconfdir}/xdg/menus/{gnome-,}applications.menu
 %{_datadir}/gir-1.0/GMenu-3.0.gir
 
 %changelog
+* Wed Jul 05 2023  Ray Strode <rstrode@redhat.com> - 3.13.3-12
+- Add -merged directories out of the box
+  Resolves: #2125685
+
 * Fri Dec 06 2019 Ray Strode <rstrode@redhat.com> - 3.13.3-11
 - swallow up redhat-menus
   Resolves: #1715890
